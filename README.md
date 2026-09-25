@@ -4,8 +4,10 @@ Build local-first Flutter apps that keep working when the cloud disappears.
 
 PocketEdge turns Android, Windows, macOS and Linux devices into local application servers for Flutter apps. Serve APIs and WebSockets over Wi-Fi, persist data locally, and sync to the cloud only when needed.
 
-한국어 안내는 [docs/README.ko.md](docs/README.ko.md), 中文简体 안내는
-[docs/README.zh-CN.md](docs/README.zh-CN.md)에서 확인할 수 있습니다.
+한국어 안내는 [doc/README.ko.md](doc/README.ko.md), 中文简体 안내는
+[doc/README.zh-CN.md](doc/README.zh-CN.md)에서 확인할 수 있습니다. AI가
+패키지를 사용할 때는 [llms.txt](llms.txt)와 [AI 사용 가이드](doc/AI_USAGE.md)를
+먼저 읽도록 하십시오.
 
 ## Quick start
 
@@ -273,6 +275,27 @@ await edge.start();
 This first package-shaped MVP includes server lifecycle, REST routing, health/status, WebSocket broadcast, memory and SQLite storage, versioned join information, QR rendering, static web serving, pairing tokens, and an offline queue. Calling `edge.stop()` also stops LAN address monitoring; injected SQLite stores remain owned by the application and should be closed by the caller. Platform background hosts and cloud adapters are isolated for later phases.
 
 PocketEdge is infrastructure, not business logic. Orders, menus, payments, and domain permissions belong in applications built on top of it.
+
+## 한국어 요약
+
+PocketEdge는 인터넷이 끊겨도 같은 LAN에서 동작하는 Flutter 로컬 서버입니다.
+`PocketEdge`를 만들고 `get`, `post`, `secureGet`으로 API를 등록한 뒤
+`await edge.start()`로 시작합니다. 개인 데이터 API에는 pairing token과 세션
+권한을 사용하고, 운영 환경에서는 `pairingRequired: true`, 명시적 CORS,
+HTTPS를 설정하십시오. Web에서는 SQLite를 사용할 수 없으므로 메모리 저장소나
+서버 저장소를 사용합니다. 자세한 내용은 [한국어 문서](doc/README.ko.md)를
+확인하십시오.
+
+## 中文简体摘要
+
+PocketEdge 是一个即使断网也能在同一局域网运行的 Flutter 本地服务器。
+创建 `PocketEdge` 后使用 `get`、`post` 或 `secureGet` 注册 API，再调用
+`await edge.start()` 启动。私人数据必须使用 pairing token、会话和权限控制；
+生产环境建议启用 `pairingRequired: true`、明确的 CORS 和 HTTPS。Web 不支持
+SQLite，应使用内存存储或服务器存储。详细内容请参阅[中文文档](doc/README.zh-CN.md)。
+
+For AI-assisted development, read [llms.txt](llms.txt) and
+[doc/AI_USAGE.md](doc/AI_USAGE.md) before generating integration code.
 
 ## License
 

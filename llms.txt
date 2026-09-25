@@ -1,0 +1,58 @@
+# PocketEdge
+
+PocketEdge is a local-first Flutter edge server for LAN applications.
+It provides HTTP routes, WebSocket realtime events, QR pairing, local storage,
+file sharing, offline queues, and optional cloud synchronization.
+
+## Start here
+
+1. Create `final edge = PocketEdge()`.
+2. Register routes with `edge.get`, `edge.post`, or `edge.secureGet`.
+3. Start with `await edge.start()`.
+4. Stop with `await edge.stop()`.
+5. Use `edge.joinInfo` or `GET /_edge/join` for QR/manual client connection data.
+
+## Important APIs
+
+- `PocketEdge`: HTTP/WebSocket host lifecycle and routing.
+- `PocketEdgeConfig`: port, pairing, realtime, and optional TLS settings.
+- `EdgeSession`, `PairingManager`: client pairing and sessions.
+- `EdgeAuthorization`: role and permission checks.
+- `EdgeFileStore`: bounded and signature-checked file uploads.
+- `EdgeJoinInfo`: versioned QR/manual connection payload.
+- `MemoryEdgeStorage`, `SqliteEdgeStorage`: local records.
+- `OfflineQueue`, `SqliteOfflineQueue`: offline work queue.
+- `SyncCoordinator`, `RestPocketEdgeCloudAdapter`: optional cloud sync.
+- `EdgeChannel`: typed realtime channel abstraction.
+
+## Recommended secure setup
+
+- Use `pairingRequired: true` for privileged hosts.
+- Issue short-lived pairing tokens and use `Authorization: Bearer` sessions.
+- Use explicit CORS origins; never use wildcard CORS for privileged APIs.
+- Enable `realtimeAuthRequired: true` for private WebSocket data.
+- Configure TLS with an application-owned `SecurityContext` when needed.
+- Do not commit `.env`, certificates, keys, keystores, SQLite databases, or tokens.
+- Keep cloud and notification credentials on a trusted backend.
+
+## Platform constraints
+
+- Android, macOS, Windows, and Linux can host native local servers.
+- Web can act as a client and use memory storage/queues.
+- SQLite APIs use `dart:ffi` and are unavailable on Web.
+- Android foreground service behavior does not bypass force-stop or shutdown.
+
+## Documentation
+
+- English: `README.md`
+- Korean: `doc/README.ko.md`
+- Simplified Chinese: `doc/README.zh-CN.md`
+- AI guide: `doc/AI_USAGE.md`
+- Security policy: `SECURITY.md`
+
+## Avoid
+
+- Do not expose privileged routes without pairing/session authorization.
+- Do not treat a LAN as automatically trusted.
+- Do not put business rules, payments, or cloud credentials in PocketEdge core.
+- Do not claim Web SQLite persistence.
