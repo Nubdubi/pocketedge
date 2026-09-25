@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.7
+
+- Removed the root demo application and platform runner projects from the
+  package repository.
+- Added DartDoc comments for the public API to improve VS Code and API
+  reference usage.
+
 ## 0.1.6
 
 - Added Cloudflare Tunnel support through `PocketEdgeConfig.publicBaseUrl`.
