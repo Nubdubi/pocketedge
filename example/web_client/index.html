@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PocketEdge Local Room</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { max-width: 720px; margin: 0 auto; padding: 24px; background: #f5f7fb; color: #172033; }
+    main { background: white; border: 1px solid #e3e7ef; border-radius: 18px; padding: 20px; box-shadow: 0 8px 30px #17203312; }
+    h1 { margin-top: 0; font-size: 24px; }
+    #status { color: #596579; font-size: 14px; }
+    #messages { min-height: 280px; max-height: 55vh; overflow: auto; display: grid; gap: 8px; margin: 18px 0; }
+    .message { background: #eef1ff; border-radius: 12px; padding: 10px 12px; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; border: 1px solid #ccd3e0; border-radius: 10px; padding: 11px; font-size: 16px; }
+    button { border: 0; border-radius: 10px; padding: 0 18px; background: #4f46e5; color: white; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>PocketEdge Local Room</h1>
+    <div id="status">Pairing with this local host…</div>
+    <section id="messages" aria-live="polite"></section>
+    <form id="form">
+      <input id="message" autocomplete="off" placeholder="Write a local message…">
+      <button>Send</button>
+    </form>
+    <p><input id="file" type="file"><button id="upload" type="button">Upload file</button></p>
+  </main>
+  <script>
+    const status = document.querySelector('#status');
+    const messages = document.querySelector('#messages');
+    const input = document.querySelector('#message');
+    let sessionToken;
+    let socket;
+    async function pair() {
+      const join = await fetch('/_edge/join').then(r => r.json());
+      const pair = await fetch('/_edge/pair', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({pairToken: join.pairToken, deviceId: `browser_${Date.now()}`})}).then(r => r.json());
+      sessionToken = pair.sessionToken;
+      socket = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws`);
+      socket.addEventListener('open', () => status.textContent = 'Connected locally · internet not required');
+      socket.addEventListener('close', () => status.textContent = 'Disconnected from local host');
+      socket.addEventListener('message', ({data}) => {
+      try {
+        const event = JSON.parse(data);
+        if (event.channel !== 'room' || event.event !== 'message') return;
+        const item = document.createElement('div');
+        item.className = 'message';
+        item.textContent = event.data.text || '';
+        messages.appendChild(item);
+        messages.scrollTop = messages.scrollHeight;
+      } catch (_) {}
+      });
+    }
+    pair().catch(error => status.textContent = `Pairing failed: ${error}`);
+    document.querySelector('#form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = input.value.trim();
+      if (!text || !socket || socket.readyState !== WebSocket.OPEN) return;
+      socket.send(JSON.stringify({channel: 'room', event: 'message', data: {text}}));
+      input.value = '';
+    });
+    document.querySelector('#upload').addEventListener('click', async () => {
+      const file = document.querySelector('#file').files[0];
+      if (!file || !sessionToken) return;
+      const response = await fetch('/_edge/files', {method: 'POST', headers: {'Authorization': `Bearer ${sessionToken}`, 'Content-Type': file.type || 'application/octet-stream'}, body: file});
+      status.textContent = response.ok ? 'File uploaded locally' : `Upload failed: ${response.status}`;
+    });
+  </script>
+</body>
+</html>
