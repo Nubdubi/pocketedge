@@ -1,6 +1,6 @@
 name: pocketedge
 description: Local-first edge server framework for Flutter applications.
-version: 0.1.7
+version: 0.1.6
 executables:
   pocketedge: pocketedge
 repository: https://github.com/Nubdubi/pocketedge

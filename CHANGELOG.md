@@ -1,15 +1,11 @@
 # Changelog
 
-## 0.1.7
-
-- Added the `pocketedge tunnel` guided setup CLI and automatic YAML generation.
-- Kept Cloudflare Tunnel integration optional; LAN mode remains the default.
-
 ## 0.1.6
 
 - Added Cloudflare Tunnel support through `PocketEdgeConfig.publicBaseUrl`.
 - Added tunnel-aware WebSocket join URLs and a runnable configuration example.
-- Added the `pocketedge tunnel` guided setup CLI.
+- Added the `pocketedge tunnel` guided setup CLI and automatic YAML generation.
+- Kept Cloudflare Tunnel integration optional; LAN mode remains the default.
 
 ## 0.1.5
 
