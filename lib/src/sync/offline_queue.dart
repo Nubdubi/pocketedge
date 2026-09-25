@@ -1,7 +1,9 @@
 // Copyright 2026 PocketEdge contributors
 // SPDX-License-Identifier: Apache-2.0
+/// Lifecycle state of an offline queue entry.
 enum QueueState { pending, sending, sent, failed, expired }
 
+/// A queued operation waiting for local or cloud processing.
 class EdgeQueueEntry {
   EdgeQueueEntry({required this.id, required this.type, required this.payload})
       : createdAt = DateTime.now();
@@ -13,11 +15,14 @@ class EdgeQueueEntry {
   QueueState state = QueueState.pending;
 }
 
+/// In-memory offline queue available on every supported platform.
 class OfflineQueue {
   final List<EdgeQueueEntry> _entries = [];
   List<EdgeQueueEntry> get pending => List.unmodifiable(
         _entries.where((entry) => entry.state == QueueState.pending),
       );
+
+  /// Adds a new pending operation to the queue.
   EdgeQueueEntry enqueue(String type, Map<String, dynamic> payload) {
     final entry = EdgeQueueEntry(
       id: 'queue_${DateTime.now().microsecondsSinceEpoch}',

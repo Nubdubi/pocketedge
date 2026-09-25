@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Added API documentation comments for the core public surface.
+- Improved generated API documentation coverage for pub.dev scoring.
+
 ## 0.1.2
 
 - Include storage source files in the published package.

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+/// Metadata returned after a file has been stored.
 class FileUploadResult {
   const FileUploadResult({
     required this.id,
@@ -16,6 +17,7 @@ class FileUploadResult {
   final String? contentType;
 }
 
+/// Raised when an upload violates storage policy.
 class FileUploadException implements Exception {
   const FileUploadException(this.message);
   final String message;
@@ -23,6 +25,7 @@ class FileUploadException implements Exception {
   String toString() => 'FileUploadException: $message';
 }
 
+/// Bounded local file storage with safe IDs and content validation.
 class EdgeFileStore {
   EdgeFileStore(
     this.root, {
@@ -42,6 +45,7 @@ class EdgeFileStore {
   final Set<String> allowedContentTypes;
   final bool validateContentSignatures;
 
+  /// Saves bytes from [source] and validates the declared [contentType].
   Future<FileUploadResult> save(
     Stream<List<int>> source, {
     String? contentType,
@@ -85,6 +89,7 @@ class EdgeFileStore {
     }
   }
 
+  /// Opens a previously uploaded file by its generated ID.
   Future<File> open(String id) async {
     if (!_safeId(id)) throw const FileUploadException('Invalid file ID.');
     final file = File('${root.path}${Platform.pathSeparator}$id.bin');
@@ -94,6 +99,7 @@ class EdgeFileStore {
     return file;
   }
 
+  /// Deletes a file and its stored content-type metadata.
   Future<void> delete(String id) async {
     final file = await open(id);
     await file.delete();
@@ -101,6 +107,7 @@ class EdgeFileStore {
     if (await metadata.exists()) await metadata.delete();
   }
 
+  /// Returns the declared content type for an uploaded file.
   Future<String?> contentType(String id) async {
     await open(id);
     final metadata = File('${root.path}${Platform.pathSeparator}$id.meta');

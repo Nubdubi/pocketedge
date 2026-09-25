@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart';
 
 import '../core/types.dart';
 
+/// A short-lived, single-use token used to bootstrap a session.
 class PairingToken {
   PairingToken._(this.value, this.expiresAt, this.role);
   final String value;
@@ -15,6 +16,7 @@ class PairingToken {
   bool get expired => DateTime.now().isAfter(expiresAt);
 }
 
+/// Issues and consumes temporary pairing tokens.
 class PairingManager {
   PairingManager({this.ttl = const Duration(minutes: 5)});
   final Duration ttl;
@@ -56,6 +58,7 @@ class PairingManager {
   String digest(String value) => sha256.convert(utf8.encode(value)).toString();
 }
 
+/// In-memory session manager for temporary local rooms.
 class SessionManager {
   SessionManager({this.ttl = const Duration(hours: 1)});
   final Duration ttl;

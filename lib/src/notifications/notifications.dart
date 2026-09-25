@@ -6,6 +6,7 @@ import '../core/pocketedge.dart';
 import 'dart:convert';
 import 'dart:io';
 
+/// A domain notification delivered through an application provider.
 class EdgeNotification {
   const EdgeNotification({
     required this.type,
@@ -17,6 +18,7 @@ class EdgeNotification {
   final Map<String, dynamic> data;
 }
 
+/// Outcome of sending a notification.
 class NotificationResult {
   const NotificationResult({required this.sent, this.provider, this.error});
   final bool sent;
@@ -24,6 +26,7 @@ class NotificationResult {
   final Object? error;
 }
 
+/// Provider contract for local or backend notification delivery.
 abstract interface class NotificationProvider {
   String get id;
   Future<NotificationResult> send(EdgeNotification notification);
@@ -46,6 +49,7 @@ class LocalWebSocketNotification implements NotificationProvider {
   }
 }
 
+/// Tries notification providers until one succeeds.
 class NotificationDispatcher {
   NotificationDispatcher([Iterable<NotificationProvider> providers = const []])
       : providers = List.unmodifiable(providers);

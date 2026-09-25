@@ -7,8 +7,11 @@ import 'package:shelf/shelf.dart';
 
 typedef EdgeHandler = Future<Response> Function(Request request);
 
+/// Creates JSON responses for PocketEdge routes.
 class EdgeResponse {
   const EdgeResponse._();
+
+  /// Encodes [value] as a JSON response with the given HTTP [status].
   static Response json(Map<String, dynamic> value, {int status = 200}) =>
       Response(
         status,
@@ -37,6 +40,7 @@ class PocketEdgeConfig {
   final SecurityContext? securityContext;
 }
 
+/// Runtime information about a PocketEdge host.
 class EdgeStatus {
   const EdgeStatus({
     required this.running,
@@ -54,6 +58,8 @@ class EdgeStatus {
   final Duration uptime;
   final int queuePending;
   final String scheme;
+
+  /// Returns the best URL that clients can use to reach the host.
   String get url => localAddress == null
       ? '$scheme://localhost:$port'
       : '$scheme://$localAddress:$port';
@@ -74,6 +80,8 @@ class EdgeSession {
   final String role;
   final DateTime issuedAt;
   final DateTime expiresAt;
+
+  /// Whether this session has passed its expiration time.
   bool get expired => DateTime.now().isAfter(expiresAt);
   Map<String, dynamic> toJson() => {
         'sessionId': sessionId,
@@ -91,14 +99,17 @@ sealed class PocketEdgeException implements Exception {
   String toString() => 'PocketEdgeException: $message';
 }
 
+/// Raised when the configured listening port cannot be opened.
 class PortUnavailableException extends PocketEdgeException {
   const PortUnavailableException(super.message);
 }
 
+/// Raised when a pairing request is invalid or already consumed.
 class PairingRejectedException extends PocketEdgeException {
   const PairingRejectedException(super.message);
 }
 
+/// Raised when a local storage operation fails.
 class StorageException extends PocketEdgeException {
   const StorageException(super.message);
 }

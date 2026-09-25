@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import '../core/types.dart';
 
+/// Maps session roles to permissions for protected routes.
 class EdgeAuthorization {
   EdgeAuthorization({Map<String, Set<String>>? permissions})
       : _permissions = permissions ??

@@ -1,5 +1,6 @@
 // Copyright 2026 PocketEdge contributors
 // SPDX-License-Identifier: Apache-2.0
+/// Fixed-window limiter used to bound pairing and authenticated requests.
 class EdgeRateLimiter {
   EdgeRateLimiter({
     this.maxRequests = 60,

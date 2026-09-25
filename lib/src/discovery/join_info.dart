@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 
+/// Versioned connection data encoded in QR codes and join responses.
 class EdgeJoinInfo {
   const EdgeJoinInfo({
     required this.host,
@@ -19,6 +20,7 @@ class EdgeJoinInfo {
   final String scheme;
   final int version;
 
+  /// Builds the base URI represented by this payload.
   Uri get uri => Uri(scheme: scheme, host: host, port: port);
 
   Map<String, dynamic> toJson() => {
@@ -29,6 +31,8 @@ class EdgeJoinInfo {
         'scheme': scheme,
         if (pairToken != null) 'pairToken': pairToken,
       };
+
+  /// Encodes this payload for a QR code.
   String encode() => jsonEncode(toJson());
 
   factory EdgeJoinInfo.fromJson(Map<String, dynamic> json) => EdgeJoinInfo(

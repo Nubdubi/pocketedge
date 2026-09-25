@@ -1,7 +1,9 @@
 // Copyright 2026 PocketEdge contributors
 // SPDX-License-Identifier: Apache-2.0
+/// Severity of a structured PocketEdge log record.
 enum EdgeLogLevel { trace, debug, info, warning, error, critical }
 
+/// Structured lifecycle or request log record.
 class EdgeLogRecord {
   const EdgeLogRecord({
     required this.time,
@@ -26,6 +28,7 @@ class EdgeLogRecord {
 
 typedef EdgeLogSink = void Function(EdgeLogRecord record);
 
+/// Lightweight logger with an application-provided sink.
 class EdgeLogger {
   EdgeLogger({this.sink});
   final EdgeLogSink? sink;

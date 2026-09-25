@@ -3,6 +3,7 @@
 
 import 'offline_queue.dart';
 
+/// A local change sent to a cloud synchronization adapter.
 class EdgeSyncEvent {
   const EdgeSyncEvent({
     required this.id,
@@ -16,23 +17,27 @@ class EdgeSyncEvent {
   final DateTime createdAt;
 }
 
+/// Cursor identifying the last successfully pulled cloud change.
 class EdgeSyncCursor {
   const EdgeSyncCursor([this.value]);
   final String? value;
 }
 
+/// Result returned after a sync push operation.
 class SyncResult {
   const SyncResult({required this.accepted, this.cursor});
   final int accepted;
   final EdgeSyncCursor? cursor;
 }
 
+/// Adapter contract for optional cloud synchronization.
 abstract interface class PocketEdgeCloudAdapter {
   Future<bool> ping();
   Future<SyncResult> push(List<EdgeSyncEvent> events);
   Future<List<EdgeSyncEvent>> pull(EdgeSyncCursor cursor);
 }
 
+/// Flushes pending in-memory queue entries when the adapter is online.
 class SyncCoordinator {
   SyncCoordinator(this.queue, this.adapter);
   final OfflineQueue queue;

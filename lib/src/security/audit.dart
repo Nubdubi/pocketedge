@@ -1,5 +1,6 @@
 // Copyright 2026 PocketEdge contributors
 // SPDX-License-Identifier: Apache-2.0
+/// A security or lifecycle event recorded by the host.
 class EdgeAuditEvent {
   const EdgeAuditEvent({
     required this.type,
@@ -19,11 +20,14 @@ class EdgeAuditEvent {
       };
 }
 
+/// Bounded in-memory audit log for security-relevant events.
 class EdgeAuditLog {
   EdgeAuditLog({this.maxEntries = 1000});
   final int maxEntries;
   final List<EdgeAuditEvent> _events = [];
   List<EdgeAuditEvent> get events => List.unmodifiable(_events);
+
+  /// Records an event and evicts the oldest entries over the configured bound.
   void record(
     String type, {
     String? subject,
@@ -43,6 +47,7 @@ class EdgeAuditLog {
   void clear() => _events.clear();
 }
 
+/// Rejects reused request IDs, nonces, and stale timestamps.
 class EdgeReplayGuard {
   EdgeReplayGuard({this.maxAge = const Duration(minutes: 5)});
   final Duration maxAge;

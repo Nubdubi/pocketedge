@@ -5,6 +5,7 @@ import 'dart:async';
 
 import '../core/pocketedge.dart';
 
+/// A realtime event delivered to a channel subscriber.
 class EdgeEvent {
   const EdgeEvent({
     required this.id,
@@ -20,12 +21,17 @@ class EdgeEvent {
   final Map<String, dynamic> data;
 }
 
+/// Namespaced realtime events for a [PocketEdge] host.
 class EdgeChannel {
   EdgeChannel(this.edge, this.name);
   final PocketEdge edge;
   final String name;
+
+  /// Listens only to events whose channel matches this channel name.
   StreamSubscription<EdgeEvent> listen(void Function(EdgeEvent event) onData) =>
       edge.events.where((event) => event.channel == name).listen(onData);
+
+  /// Broadcasts an event through this channel.
   Future<void> broadcast({
     required String event,
     required Map<String, dynamic> data,

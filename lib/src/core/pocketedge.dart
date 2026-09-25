@@ -27,6 +27,7 @@ import '../sync/offline_queue.dart';
 import 'types.dart';
 import 'logging.dart';
 
+/// A local HTTP and WebSocket application host for Flutter apps.
 class PocketEdge {
   PocketEdge({
     PocketEdgeConfig? config,
@@ -84,11 +85,22 @@ class PocketEdge {
         scheme: status.scheme,
       );
 
+  /// Registers a public GET route.
   void get(String path, EdgeHandler handler) => _router.get(path, handler);
+
+  /// Registers a public POST route.
   void post(String path, EdgeHandler handler) => _router.post(path, handler);
+
+  /// Stream of events broadcast by realtime channels.
   Stream<EdgeEvent> get events => _events.stream;
+
+  /// Returns a named realtime channel.
   EdgeChannel channel(String name) => EdgeChannel(this, name);
+
+  /// Adds middleware to the host request pipeline.
   void use(Middleware middleware) => _middlewares.add(middleware);
+
+  /// Registers a session-protected GET route.
   void secureGet(String path, EdgeHandler handler, {String? permission}) =>
       _router.get(
         path,
@@ -109,18 +121,27 @@ class PocketEdge {
           replayProtected: replayProtected,
         ),
       );
+
+  /// Registers a session-protected DELETE route.
   void secureDelete(String path, EdgeHandler handler, {String? permission}) =>
       _router.delete(
         path,
         (request) => _authenticated(request, handler, permission: permission),
       );
+
+  /// Issues a short-lived, single-use pairing token for [role].
   String issuePairingToken({String role = 'guest'}) {
     _pairToken = pairing.issue(role: role).value;
     return _pairToken!;
   }
 
+  /// Refreshes the advertised LAN address used in join information.
   Future<String?> refreshNetworkAddress() => networkMonitor.checkNow();
+
+  /// Starts periodic LAN address monitoring.
   void startNetworkMonitoring() => networkMonitor.start();
+
+  /// Stops periodic LAN address monitoring.
   void stopNetworkMonitoring() => networkMonitor.stop();
 
   /// Serves an application's local Flutter Web build after API routes.
@@ -135,6 +156,7 @@ class PocketEdge {
     );
   }
 
+  /// Starts the local HTTP/WebSocket host.
   Future<void> start() async {
     if (_server != null) return;
     _router.get(
@@ -175,6 +197,7 @@ class PocketEdge {
     }
   }
 
+  /// Stops the host, connected WebSocket clients, and address monitor.
   Future<void> stop() async {
     final server = _server;
     _server = null;
@@ -188,6 +211,7 @@ class PocketEdge {
     logger.info('server', 'stopped', {'nodeId': nodeId});
   }
 
+  /// Broadcasts an event to listeners and connected WebSocket clients.
   Future<void> broadcast({
     required String channel,
     required String event,
