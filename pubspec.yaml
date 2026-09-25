@@ -1,7 +1,7 @@
 name: pocketedge
 description: Local-first edge server framework for Flutter applications.
 version: 0.1.0
-publish_to: none
+publish_to: https://pub.dev
 repository: https://github.com/pocketedge/pocketedge
 topics:
   - flutter
