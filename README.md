@@ -2,12 +2,17 @@
 
 Build local-first Flutter apps that keep working when the cloud disappears.
 
-PocketEdge turns Android, Windows, macOS and Linux devices into local application servers for Flutter apps. Serve APIs and WebSockets over Wi-Fi, persist data locally, and sync to the cloud only when needed.
+PocketEdge lets Flutter applications turn supported native devices into local
+application servers. Serve APIs and WebSockets over Wi-Fi, persist data locally,
+and sync to the cloud only when needed.
 
 한국어 안내는 [doc/README.ko.md](https://github.com/Nubdubi/pocketedge/blob/main/doc/README.ko.md), 中文简体 안내는
 [doc/README.zh-CN.md](https://github.com/Nubdubi/pocketedge/blob/main/doc/README.zh-CN.md)에서 확인할 수 있습니다. AI가
 패키지를 사용할 때는 [llms.txt](https://github.com/Nubdubi/pocketedge/blob/main/llms.txt)와 [AI 사용 가이드](https://github.com/Nubdubi/pocketedge/blob/main/doc/AI_USAGE.md)를
 먼저 읽도록 하십시오.
+
+무료 기능 범위와 공개 저장소 보안 기준은
+[doc/FREE_USAGE.ko.md](https://github.com/Nubdubi/pocketedge/blob/main/doc/FREE_USAGE.ko.md)에서 확인할 수 있습니다.
 
 ## Quick start
 
@@ -39,9 +44,7 @@ Clients send `POST /_edge/pair` with `{"pairToken":"...","deviceId":"..."}` and 
 
 The built-in roles are `guest`, `staff`, `manager`, and `admin`. Applications can provide their own permission map through `EdgeAuthorization`. Pairing and authenticated routes have a default in-memory rate limiter.
 
-On Android, the Local Room example starts a foreground service alongside the host and displays a persistent notification. This keeps the hosting process active when the Flutter activity is backgrounded; it does not promise survival after force-stop or device shutdown.
-
-Hosts can also monitor themselves with the watchdog:
+Hosts can monitor themselves with the watchdog:
 
 ```dart
 final watchdog = EdgeWatchdog(edge);
@@ -49,8 +52,6 @@ watchdog.start();
 ```
 
 The watchdog restarts a stopped host up to its configured limit and then disables itself to avoid crash loops.
-
-On desktop, enabling the host sets persistent mode through `DesktopHostController`. macOS keeps the app available from a PocketEdge menu-bar item after the window closes. Windows hides the window instead of terminating while persistent mode is enabled; the native tray surface can be extended without changing the Dart API.
 
 Cloud sync is adapter-based and optional:
 
@@ -124,6 +125,11 @@ edge.startNetworkMonitoring();
 ```
 
 ## Cloudflare Tunnel
+
+The free distribution does not include a PocketEdge-operated relay server or
+API-key service. Users can connect over LAN or run their own `cloudflared`
+Tunnel. A managed relay can be added later as a separate service without
+adding its credentials or private server implementation to this repository.
 
 To allow clients outside the local Wi-Fi, run `cloudflared` on the same device
 as the PocketEdge host and forward a public hostname to a loopback listener:

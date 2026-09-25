@@ -1,0 +1,29 @@
+name: Package CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Analyze package and examples
+        run: flutter analyze
+      - name: Run tests
+        run: flutter test
+      - name: Validate package archive
+        run: dart pub publish --dry-run
+      - name: Check public repository for secrets
+        run: bash tool/check_public_secrets.sh
