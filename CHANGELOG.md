@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Include storage source files in the published package.
+- Improve pub.dev documentation and AI usage guidance.
+
 ## 0.1.0
 
 - Added conditional web stubs so the Flutter Web release build works without SQLite FFI.

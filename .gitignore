@@ -62,10 +62,10 @@ macos/*.p12
 *.db
 *.db-*
 *.meta
-data/
-storage/
-secrets/
-credentials/
+/data/
+/storage/
+/secrets/
+/credentials/
 
 # Deployment and signing output
 dist/
