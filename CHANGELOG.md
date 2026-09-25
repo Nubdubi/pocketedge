@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6
+
+- Added Cloudflare Tunnel support through `PocketEdgeConfig.publicBaseUrl`.
+- Added tunnel-aware WebSocket join URLs and a runnable configuration example.
+
 ## 0.1.5
 
 - Added the root example guide and finalized pub.dev package metadata.
