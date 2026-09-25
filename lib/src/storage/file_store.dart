@@ -12,14 +12,23 @@ class FileUploadResult {
     required this.bytes,
     required this.contentType,
   });
+
+  /// Generated storage identifier.
   final String id;
+
+  /// Number of bytes written.
   final int bytes;
+
+  /// Declared content type, when provided.
   final String? contentType;
 }
 
 /// Raised when an upload violates storage policy.
 class FileUploadException implements Exception {
+  /// Creates an upload policy error with [message].
   const FileUploadException(this.message);
+
+  /// Human-readable policy failure.
   final String message;
   @override
   String toString() => 'FileUploadException: $message';
@@ -27,6 +36,7 @@ class FileUploadException implements Exception {
 
 /// Bounded local file storage with safe IDs and content validation.
 class EdgeFileStore {
+  /// Creates bounded storage rooted at [root].
   EdgeFileStore(
     this.root, {
     this.maxBytes = 10 * 1024 * 1024,
@@ -40,9 +50,17 @@ class EdgeFileStore {
               'application/pdf',
               'text/plain',
             };
+
+  /// Directory containing uploaded files and metadata.
   final Directory root;
+
+  /// Maximum accepted upload size in bytes.
   final int maxBytes;
+
+  /// MIME types accepted by [save].
   final Set<String> allowedContentTypes;
+
+  /// Whether known file signatures are checked.
   final bool validateContentSignatures;
 
   /// Saves bytes from [source] and validates the declared [contentType].

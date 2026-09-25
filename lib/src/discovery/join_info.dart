@@ -5,6 +5,7 @@ import 'dart:convert';
 
 /// Versioned connection data encoded in QR codes and join responses.
 class EdgeJoinInfo {
+  /// Creates versioned connection data for QR or manual pairing.
   const EdgeJoinInfo({
     required this.host,
     required this.port,
@@ -13,11 +14,23 @@ class EdgeJoinInfo {
     this.scheme = 'http',
     this.version = 1,
   });
+
+  /// Hostname or IP address advertised to the joining device.
   final String host;
+
+  /// Port advertised to the joining device.
   final int port;
+
+  /// Stable identifier of the PocketEdge host.
   final String nodeId;
+
+  /// Optional single-use pairing token.
   final String? pairToken;
+
+  /// Transport scheme, normally `http` or `https`.
   final String scheme;
+
+  /// Payload format version.
   final int version;
 
   /// Builds the base URI represented by this payload.
@@ -50,6 +63,7 @@ class EdgeJoinInfo {
         scheme: json['scheme'] as String? ?? 'http',
       );
 
+  /// Decodes a JSON string produced by [encode].
   factory EdgeJoinInfo.decode(String value) =>
       EdgeJoinInfo.fromJson(jsonDecode(value) as Map<String, dynamic>);
 }

@@ -18,9 +18,12 @@ class EdgeResponse {
         body: jsonEncode(value),
         headers: {'content-type': 'application/json; charset=utf-8'},
       );
+
+  /// Creates a successful JSON response with status 200.
   static Response ok([Map<String, dynamic> value = const {}]) => json(value);
 }
 
+/// Configuration for a PocketEdge HTTP and WebSocket host.
 class PocketEdgeConfig {
   const PocketEdgeConfig({
     this.port = 8080,
@@ -82,11 +85,23 @@ class EdgeSession {
     required this.issuedAt,
     required this.expiresAt,
   });
+
+  /// Bearer token used by authenticated requests.
   final String token;
+
+  /// Stable identifier for this session.
   final String sessionId;
+
+  /// Identifier of the device that paired with the host.
   final String deviceId;
+
+  /// Authorization role assigned to the device.
   final String role;
+
+  /// Session creation time.
   final DateTime issuedAt;
+
+  /// Session expiration time.
   final DateTime expiresAt;
 
   /// Whether this session has passed its expiration time.
@@ -109,15 +124,18 @@ sealed class PocketEdgeException implements Exception {
 
 /// Raised when the configured listening port cannot be opened.
 class PortUnavailableException extends PocketEdgeException {
+  /// Indicates that the configured listening port cannot be opened.
   const PortUnavailableException(super.message);
 }
 
 /// Raised when a pairing request is invalid or already consumed.
 class PairingRejectedException extends PocketEdgeException {
+  /// Indicates that a pairing token or request was rejected.
   const PairingRejectedException(super.message);
 }
 
 /// Raised when a local storage operation fails.
 class StorageException extends PocketEdgeException {
+  /// Indicates that a storage operation failed.
   const StorageException(super.message);
 }

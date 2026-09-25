@@ -14,11 +14,22 @@ class CloudflareTunnelConfig {
     this.credentialsFile,
   });
 
+  /// Stable Cloudflare Tunnel UUID.
   final String tunnelId;
+
+  /// Human-readable Tunnel name.
   final String tunnelName;
+
+  /// Public hostname routed to the local service.
   final String hostname;
+
+  /// Local origin hostname.
   final String localHost;
+
+  /// Local PocketEdge HTTP port.
   final int localPort;
+
+  /// Optional path to the Tunnel credentials JSON file.
   final String? credentialsFile;
 
   /// Returns YAML accepted by `cloudflared tunnel run`.

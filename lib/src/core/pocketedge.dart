@@ -29,6 +29,10 @@ import 'logging.dart';
 
 /// A local HTTP and WebSocket application host for Flutter apps.
 class PocketEdge {
+  /// Creates a local HTTP and WebSocket host.
+  ///
+  /// When [config] uses a public base URL, that URL is advertised in
+  /// [joinInfo] while the server continues listening on the configured port.
   PocketEdge({
     PocketEdgeConfig? config,
     EdgeStorage? storage,
@@ -39,18 +43,44 @@ class PocketEdge {
         storage = storage ?? MemoryEdgeStorage(),
         nodeId = _nodeId(),
         logger = logger ?? EdgeLogger();
+
+  /// Runtime configuration for this host.
   final PocketEdgeConfig config;
+
+  /// Storage used by application code.
   final EdgeStorage storage;
+
+  /// Optional bounded file store for protected upload routes.
   final EdgeFileStore? fileStore;
+
+  /// Optional SQLite-backed session store on native platforms.
   final SqliteSessionManager? sessionStore;
+
+  /// Logger used for lifecycle and security events.
   final EdgeLogger logger;
+
+  /// Stable identifier for this host instance.
   final String nodeId;
+
+  /// In-memory offline operation queue.
   final OfflineQueue queue = OfflineQueue();
+
+  /// Pairing token manager.
   final PairingManager pairing = PairingManager();
+
+  /// In-memory session manager.
   final SessionManager sessions = SessionManager();
+
+  /// Role and permission authorization service.
   final EdgeAuthorization authorization = EdgeAuthorization();
+
+  /// Request rate limiter used by protected endpoints.
   final EdgeRateLimiter rateLimiter = EdgeRateLimiter();
+
+  /// Security audit log.
   final EdgeAuditLog auditLog = EdgeAuditLog();
+
+  /// Replay protection for sensitive requests.
   final EdgeReplayGuard replayGuard = EdgeReplayGuard();
   late final EdgeNetworkMonitor networkMonitor = EdgeNetworkMonitor(
     onChanged: (address) => _advertisedHost = address,
@@ -65,6 +95,8 @@ class PocketEdge {
   String? _pairToken;
   HttpServer? _server;
   DateTime? _startedAt;
+
+  /// Current server, connection, and queue status.
   EdgeStatus get status => EdgeStatus(
         running: _server != null,
         port: _server?.port ?? config.port,
@@ -76,7 +108,11 @@ class PocketEdge {
         queuePending: queue.pending.length,
         scheme: config.securityContext == null ? 'http' : 'https',
       );
+
+  /// Local URL currently used by the host.
   String get url => status.url;
+
+  /// Versioned connection information for QR codes and joining clients.
   EdgeJoinInfo get joinInfo {
     final publicUrl = config.publicBaseUrl;
     final advertisedScheme = publicUrl?.scheme ?? status.scheme;
@@ -120,6 +156,8 @@ class PocketEdge {
         path,
         (request) => _authenticated(request, handler, permission: permission),
       );
+
+  /// Registers a session-protected POST route.
   void securePost(
     String path,
     EdgeHandler handler, {

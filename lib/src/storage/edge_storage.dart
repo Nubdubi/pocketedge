@@ -14,6 +14,8 @@ abstract interface class EdgeStorage {
 
 /// In-memory storage suitable for tests and Web clients.
 class MemoryEdgeStorage implements EdgeStorage {
+  /// Creates an empty in-memory store.
+  MemoryEdgeStorage();
   final Map<String, Map<String, Map<String, dynamic>>> _data = {};
   @override
   Future<void> put(
