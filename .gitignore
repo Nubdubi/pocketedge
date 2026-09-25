@@ -33,6 +33,14 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# This repository is a Dart/Flutter package, not a Flutter application.
+/android/
+/ios/
+/linux/
+/macos/
+/windows/
+/web/
+
 # Symbolication related
 app.*.symbols
 

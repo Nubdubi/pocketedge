@@ -83,17 +83,6 @@ final token = edge.issuePairingToken(role: 'staff');
 
 `EdgeFileStore`는 파일 크기, MIME allowlist, PNG/JPEG/WebP/PDF 시그니처를 검사합니다. 업로드 파일은 악성코드 검사와 썸네일 검사를 별도로 적용하십시오.
 
-## 배포
-
-```bash
-flutter build apk --release
-flutter build appbundle --release
-flutter build macos --release
-flutter build web --release --no-wasm-dry-run
-```
-
-Android Play Store는 release keystore와 `.aab`가 필요하고, macOS 배포는 Developer ID 서명과 공증이 필요합니다. Web은 `build/web` 전체를 정적 호스팅에 업로드합니다.
-
 ## Web 제한사항
 
-SQLite는 `dart:ffi` 기반이므로 Web에서 사용할 수 없습니다. Web에서는 기본 메모리 저장소와 메모리 큐를 사용하고, 영속성이 필요하면 서버 또는 클라우드 adapter를 사용하십시오.
+이 저장소는 패키지이므로 Android/iOS/macOS/Web 앱을 직접 빌드하지 않습니다. 패키지를 사용하는 별도 Flutter 앱에서 플랫폼별 빌드를 수행하십시오. SQLite는 `dart:ffi` 기반이므로 Web에서 사용할 수 없습니다. Web 클라이언트에서는 기본 메모리 저장소와 메모리 큐를 사용하고, 영속성이 필요하면 서버 또는 클라우드 adapter를 사용하십시오.

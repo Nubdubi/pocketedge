@@ -82,17 +82,9 @@ final token = edge.issuePairingToken(role: 'staff');
 
 `EdgeFileStore` 会检查文件大小、MIME allowlist，以及 PNG/JPEG/WebP/PDF 文件签名。正式环境仍应额外进行恶意软件扫描和缩略图检查。
 
-## 构建与发布
-
-```bash
-flutter build apk --release
-flutter build appbundle --release
-flutter build macos --release
-flutter build web --release --no-wasm-dry-run
-```
-
-Google Play 发布需要 release keystore 和 `.aab`；macOS 发布需要 Developer ID 签名和公证；Web 发布时上传整个 `build/web` 目录到静态托管服务。
-
 ## Web 限制
 
-SQLite 依赖 `dart:ffi`，不能在 Web 中使用。Web 应使用内存存储和内存队列；如需持久化，请使用服务器端存储或云端 adapter。
+此仓库是软件包，不再直接构建 Android/iOS/macOS/Web 应用。请在使用
+PocketEdge 的独立 Flutter 应用中执行平台构建。SQLite 依赖 `dart:ffi`，
+不能在 Web 中使用。Web 客户端应使用内存存储和内存队列；如需持久化，
+请使用服务器端存储或云端 adapter。
