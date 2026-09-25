@@ -58,6 +58,7 @@ macos/*.p12
 # Local databases, file stores, and runtime data
 *.sqlite
 *.sqlite3
+*.sqlite-*
 *.db
 *.db-*
 *.meta
