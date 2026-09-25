@@ -23,6 +23,12 @@ class EdgeJoinInfo {
   /// Builds the base URI represented by this payload.
   Uri get uri => Uri(scheme: scheme, host: host, port: port);
 
+  /// Builds the WebSocket URI for the default realtime endpoint.
+  Uri get webSocketUri => uri.replace(
+        scheme: scheme == 'https' ? 'wss' : 'ws',
+        path: '/ws',
+      );
+
   Map<String, dynamic> toJson() => {
         'version': version,
         'host': host,

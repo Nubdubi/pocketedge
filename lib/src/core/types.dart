@@ -30,6 +30,7 @@ class PocketEdgeConfig {
     this.realtime = true,
     this.realtimeAuthRequired = false,
     this.securityContext,
+    this.publicBaseUrl,
   });
   final int port;
   final String bindAddress;
@@ -38,6 +39,13 @@ class PocketEdgeConfig {
   final bool realtime;
   final bool realtimeAuthRequired;
   final SecurityContext? securityContext;
+
+  /// Public origin advertised in QR codes and join responses.
+  ///
+  /// Set this to a Cloudflare Tunnel hostname when the host is reachable
+  /// through `cloudflared`, for example `https://edge.example.com`. The
+  /// PocketEdge listener still binds to [bindAddress] and [port].
+  final Uri? publicBaseUrl;
 }
 
 /// Runtime information about a PocketEdge host.

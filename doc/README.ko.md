@@ -24,6 +24,34 @@ print(edge.url);
 
 호스트를 종료할 때는 `await edge.stop()`을 호출합니다. QR 연결 정보는 `edge.joinInfo` 또는 `GET /_edge/join`으로 가져옵니다.
 
+## Cloudflare Tunnel로 외부 접속
+
+같은 Wi-Fi 밖의 기기에서도 접속하려면 PocketEdge를 로컬 루프백에만
+바인딩하고, 같은 기기에서 `cloudflared`를 실행합니다.
+
+```dart
+final edge = PocketEdge(
+  config: PocketEdgeConfig(
+    port: 8080,
+    bindAddress: '127.0.0.1',
+    publicBaseUrl: Uri.parse('https://edge.example.com'),
+    pairingRequired: true,
+    realtimeAuthRequired: true,
+  ),
+);
+await edge.start();
+```
+
+`publicBaseUrl`은 QR 코드와 `GET /_edge/join`에 공개 주소를 넣습니다.
+실제 PocketEdge 포트를 인터넷에 직접 공개하는 설정은 아닙니다.
+`example/cloudflare_tunnel/config.yml.example`처럼 `cloudflared`가
+`http://127.0.0.1:8080`으로 전달하도록 설정하세요. 공개 HTTPS는
+Cloudflare에서 종료되고, WebSocket은 자동으로 `wss://`를 사용합니다.
+
+인터넷에서 접근 가능해지므로 `pairingRequired`와
+`realtimeAuthRequired`를 켜고, 터널 인증서·토큰 파일은 Git에 커밋하지
+마세요. 조직 계정 인증이 필요하면 Cloudflare Access도 함께 사용하세요.
+
 ## 보안 사용법
 
 권한이 필요한 API는 pairing token으로 세션을 만든 뒤 사용합니다.

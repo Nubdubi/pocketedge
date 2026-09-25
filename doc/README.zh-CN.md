@@ -24,6 +24,34 @@ print(edge.url);
 
 结束主机时调用 `await edge.stop()`。二维码连接信息可通过 `edge.joinInfo` 或 `GET /_edge/join` 获取。
 
+## 使用 Cloudflare Tunnel 进行外网访问
+
+如果需要让不在同一 Wi-Fi 的设备访问，请让 PocketEdge 只监听本机回环地址，
+并在同一台设备上运行 `cloudflared`：
+
+```dart
+final edge = PocketEdge(
+  config: PocketEdgeConfig(
+    port: 8080,
+    bindAddress: '127.0.0.1',
+    publicBaseUrl: Uri.parse('https://edge.example.com'),
+    pairingRequired: true,
+    realtimeAuthRequired: true,
+  ),
+);
+await edge.start();
+```
+
+`publicBaseUrl` 会让二维码和 `GET /_edge/join` 使用公开地址，但不会自动把
+PocketEdge 端口暴露到互联网。请参考
+`example/cloudflare_tunnel/config.yml.example`，让 `cloudflared` 转发到
+`http://127.0.0.1:8080`。公开 HTTPS 在 Cloudflare 边缘终止，WebSocket 会
+自动使用 `wss://`。
+
+由于主机现在可以从互联网访问，请保持 `pairingRequired` 和
+`realtimeAuthRequired` 开启，不要把 Tunnel 凭据提交到 Git。需要组织级身份
+策略时，可以再启用 Cloudflare Access。
+
 ## 安全使用
 
 需要权限的 API 应先通过 pairing token 创建会话：

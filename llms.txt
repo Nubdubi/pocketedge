@@ -15,7 +15,7 @@ file sharing, offline queues, and optional cloud synchronization.
 ## Important APIs
 
 - `PocketEdge`: HTTP/WebSocket host lifecycle and routing.
-- `PocketEdgeConfig`: port, pairing, realtime, and optional TLS settings.
+- `PocketEdgeConfig`: port, pairing, realtime, optional TLS, and tunnel public URL settings.
 - `EdgeSession`, `PairingManager`: client pairing and sessions.
 - `EdgeAuthorization`: role and permission checks.
 - `EdgeFileStore`: bounded and signature-checked file uploads.
@@ -56,3 +56,8 @@ file sharing, offline queues, and optional cloud synchronization.
 - Do not treat a LAN as automatically trusted.
 - Do not put business rules, payments, or cloud credentials in PocketEdge core.
 - Do not claim Web SQLite persistence.
+For Cloudflare Tunnel deployments, set `PocketEdgeConfig.publicBaseUrl` to the
+public HTTPS origin, bind the host to `127.0.0.1`, and configure `cloudflared`
+to forward that hostname to the local PocketEdge HTTP port. Keep pairing and
+realtime authentication enabled. `EdgeJoinInfo.webSocketUri` returns the
+corresponding `ws`/`wss` endpoint.

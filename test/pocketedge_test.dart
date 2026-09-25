@@ -39,6 +39,7 @@ void main() {
     );
     expect(EdgeJoinInfo.decode(info.encode()).toJson(), info.toJson());
     expect(info.uri.toString(), 'http://192.168.0.15:8080');
+    expect(info.webSocketUri.toString(), 'ws://192.168.0.15:8080/ws');
   });
 
   test('secure join information preserves HTTPS scheme', () {
@@ -59,6 +60,19 @@ void main() {
     expect(edge.joinInfo.pairToken, isNull);
     edge.issuePairingToken();
     expect(edge.joinInfo.pairToken, isNotNull);
+  });
+
+  test('public base URL is advertised for tunnel clients', () {
+    final edge = PocketEdge(
+      config: PocketEdgeConfig(
+        port: 8080,
+        bindAddress: '127.0.0.1',
+        publicBaseUrl: Uri.parse('https://edge.example.com'),
+      ),
+    );
+
+    expect(edge.joinInfo.uri.toString(), 'https://edge.example.com');
+    expect(edge.joinInfo.webSocketUri.toString(), 'wss://edge.example.com/ws');
   });
 
   test('stopping the host also stops network monitoring', () async {
@@ -625,11 +639,9 @@ void main() {
       pair.headers.contentType = ContentType.json;
       pair.write(jsonEncode({'pairToken': token, 'deviceId': 'manager_1'}));
       final pairResponse = await pair.close();
-      final session =
-          jsonDecode(
-                await pairResponse.transform(utf8.decoder).join(),
-              )['sessionToken']
-              as String;
+      final session = jsonDecode(
+        await pairResponse.transform(utf8.decoder).join(),
+      )['sessionToken'] as String;
       final request = await client.getUrl(
         Uri.parse('http://127.0.0.1:${edge.status.port}/_edge/status'),
       );

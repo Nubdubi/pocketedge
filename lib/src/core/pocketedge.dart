@@ -77,13 +77,27 @@ class PocketEdge {
         scheme: config.securityContext == null ? 'http' : 'https',
       );
   String get url => status.url;
-  EdgeJoinInfo get joinInfo => EdgeJoinInfo(
-        host: _advertisedHost ?? status.localAddress ?? '127.0.0.1',
-        port: status.port,
-        nodeId: nodeId,
-        pairToken: _pairToken,
-        scheme: status.scheme,
-      );
+  EdgeJoinInfo get joinInfo {
+    final publicUrl = config.publicBaseUrl;
+    final advertisedScheme = publicUrl?.scheme ?? status.scheme;
+    final advertisedHost = publicUrl?.host ??
+        _advertisedHost ??
+        status.localAddress ??
+        '127.0.0.1';
+    final advertisedPort = publicUrl == null || publicUrl.hasPort
+        ? publicUrl?.port ?? status.port
+        : advertisedScheme == 'https'
+            ? 443
+            : 80;
+
+    return EdgeJoinInfo(
+      host: advertisedHost,
+      port: advertisedPort,
+      nodeId: nodeId,
+      pairToken: _pairToken,
+      scheme: advertisedScheme,
+    );
+  }
 
   /// Registers a public GET route.
   void get(String path, EdgeHandler handler) => _router.get(path, handler);

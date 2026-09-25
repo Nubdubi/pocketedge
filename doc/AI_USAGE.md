@@ -15,6 +15,7 @@
 | 오프라인 작업 | `OfflineQueue` 또는 native `SqliteOfflineQueue` |
 | 클라우드 동기화 | `SyncCoordinator` + `PocketEdgeCloudAdapter` |
 | QR 연결 | `edge.joinInfo` |
+| 외부 접속 QR | `PocketEdgeConfig.publicBaseUrl`에 Cloudflare Tunnel 공개 URL 지정 |
 
 ## 표준 구현 순서
 

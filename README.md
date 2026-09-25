@@ -123,6 +123,32 @@ edge.startNetworkMonitoring();
 // edge.stop() also stops the monitor.
 ```
 
+## Cloudflare Tunnel
+
+To allow clients outside the local Wi-Fi, run `cloudflared` on the same device
+as the PocketEdge host and forward a public hostname to a loopback listener:
+
+```dart
+final edge = PocketEdge(
+  config: PocketEdgeConfig(
+    port: 8080,
+    bindAddress: '127.0.0.1',
+    publicBaseUrl: Uri.parse('https://edge.example.com'),
+    pairingRequired: true,
+    realtimeAuthRequired: true,
+  ),
+);
+await edge.start();
+```
+
+Use the ready-to-copy template in
+[`example/cloudflare_tunnel`](https://github.com/Nubdubi/pocketedge/tree/main/example/cloudflare_tunnel).
+`publicBaseUrl` changes the host and scheme advertised by QR and
+`GET /_edge/join`; it does not expose a port by itself. `cloudflared` must be
+running with an ingress such as `http://127.0.0.1:8080`. Pairing and realtime
+authentication should remain enabled because a tunnel makes the hostname
+internet-reachable.
+
 Sensitive POST routes can enable replay protection:
 
 ```dart

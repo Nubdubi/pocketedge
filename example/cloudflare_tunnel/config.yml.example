@@ -1,0 +1,9 @@
+# Copy this file to ~/.cloudflared/config.yml and replace the placeholders.
+# Never commit the real credentials JSON file or tunnel token.
+tunnel: REPLACE_WITH_TUNNEL_UUID
+credentials-file: /Users/you/.cloudflared/REPLACE_WITH_TUNNEL_UUID.json
+
+ingress:
+  - hostname: edge.example.com
+    service: http://127.0.0.1:8080
+  - service: http_status:404
