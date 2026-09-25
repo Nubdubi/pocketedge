@@ -149,6 +149,18 @@ running with an ingress such as `http://127.0.0.1:8080`. Pairing and realtime
 authentication should remain enabled because a tunnel makes the hostname
 internet-reachable.
 
+For guided setup without manual YAML editing:
+
+```bash
+cloudflared tunnel login
+dart pub global activate pocketedge
+pocketedge tunnel setup --hostname edge.example.com --port 8080
+pocketedge tunnel start
+```
+
+The helper creates the Tunnel, maps DNS, generates
+`~/.cloudflared/config.yml`, and prints the public URL.
+
 Sensitive POST routes can enable replay protection:
 
 ```dart

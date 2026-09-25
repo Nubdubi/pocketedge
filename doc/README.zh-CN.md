@@ -52,6 +52,20 @@ PocketEdge 端口暴露到互联网。请参考
 `realtimeAuthRequired` 开启，不要把 Tunnel 凭据提交到 Git。需要组织级身份
 策略时，可以再启用 Cloudflare Access。
 
+### 不手动编写 YAML
+
+可以使用 PocketEdge 命令行工具自动创建 Tunnel、配置 DNS 并生成 YAML：
+
+```bash
+cloudflared tunnel login
+dart pub global activate pocketedge
+pocketedge tunnel setup --hostname edge.example.com --port 8080
+pocketedge tunnel start
+```
+
+生成的配置保存在 `~/.cloudflared/config.yml`。使用
+`pocketedge tunnel status` 查看状态。
+
 ## 安全使用
 
 需要权限的 API 应先通过 pairing token 创建会话：

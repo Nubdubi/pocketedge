@@ -52,6 +52,21 @@ Cloudflare에서 종료되고, WebSocket은 자동으로 `wss://`를 사용합�
 `realtimeAuthRequired`를 켜고, 터널 인증서·토큰 파일은 Git에 커밋하지
 마세요. 조직 계정 인증이 필요하면 Cloudflare Access도 함께 사용하세요.
 
+### YAML을 직접 작성하지 않는 방법
+
+다음 명령을 사용하면 Tunnel 생성, DNS 연결, YAML 생성을 자동으로 처리할
+수 있습니다.
+
+```bash
+cloudflared tunnel login
+dart pub global activate pocketedge
+pocketedge tunnel setup --hostname edge.example.com --port 8080
+pocketedge tunnel start
+```
+
+생성된 설정은 `~/.cloudflared/config.yml`에 저장됩니다. 상태 확인은
+`pocketedge tunnel status`로 할 수 있습니다.
+
 ## 보안 사용법
 
 권한이 필요한 API는 pairing token으로 세션을 만든 뒤 사용합니다.

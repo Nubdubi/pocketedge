@@ -38,6 +38,18 @@ cloudflared tunnel ingress validate
 cloudflared tunnel --config ~/.cloudflared/config.yml run pocketedge
 ```
 
+For guided setup without manual YAML editing:
+
+```bash
+cloudflared tunnel login
+dart pub global activate pocketedge
+pocketedge tunnel setup --hostname edge.example.com --port 8080
+pocketedge tunnel start
+```
+
+The helper creates the tunnel, routes DNS, writes `config.yml`, and prints the
+public URL. Use `pocketedge tunnel status` to inspect it.
+
 Start PocketEdge before the tunnel, or make sure the tunnel retries while the
 local service is starting. The final catch-all ingress rule is required.
 

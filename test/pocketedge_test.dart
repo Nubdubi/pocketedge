@@ -75,6 +75,17 @@ void main() {
     expect(edge.joinInfo.webSocketUri.toString(), 'wss://edge.example.com/ws');
   });
 
+  test('Cloudflare Tunnel YAML points to the local origin', () {
+    const config = CloudflareTunnelConfig(
+      tunnelId: '12345678-1234-1234-1234-123456789abc',
+      tunnelName: 'pocketedge',
+      hostname: 'edge.example.com',
+      localPort: 8080,
+    );
+    expect(config.toYaml(), contains('service: http://127.0.0.1:8080'));
+    expect(config.toYaml(), contains('service: http_status:404'));
+  });
+
   test('stopping the host also stops network monitoring', () async {
     final edge = PocketEdge(config: const PocketEdgeConfig(port: 0));
     edge.startNetworkMonitoring();

@@ -28,3 +28,4 @@ export 'src/storage/sqlite_edge_storage_stub.dart'
     if (dart.library.io) 'src/storage/sqlite_edge_storage.dart';
 export 'src/storage/file_store.dart';
 export 'src/sync/offline_queue.dart';
+export 'src/tunnel/cloudflare_tunnel.dart';
