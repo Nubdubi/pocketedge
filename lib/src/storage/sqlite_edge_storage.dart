@@ -60,5 +60,5 @@ class SqliteEdgeStorage implements EdgeStorage {
     }
   }
 
-  void close() => _database.dispose();
+  void close() => _database.close();
 }

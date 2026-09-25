@@ -5,6 +5,8 @@
 - Added API documentation comments for the core public surface.
 - Improved generated API documentation coverage for pub.dev scoring.
 - Updated `sqlite3_flutter_libs` to `0.6.0+eol` to remove the stale CSQLite Swift Package revision.
+- Added a runnable Dart example for pub.dev package discovery.
+- Updated `sqlite3` to the latest stable 3.x line.
 
 ## 0.1.2
 

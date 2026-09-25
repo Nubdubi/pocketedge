@@ -74,5 +74,5 @@ class SqliteOfflineQueue {
     return entry;
   }
 
-  void close() => _database.dispose();
+  void close() => _database.close();
 }

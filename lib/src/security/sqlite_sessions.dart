@@ -69,7 +69,7 @@ class SqliteSessionManager {
 
   Future<void> revoke(String token) async =>
       _database.execute('DELETE FROM edge_sessions WHERE token = ?', [token]);
-  void close() => _database.dispose();
+  void close() => _database.close();
   static String _token({int length = 32}) {
     final random = Random.secure();
     return base64UrlEncode(
