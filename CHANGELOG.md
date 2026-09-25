@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.5
+
+- Added the root example guide and finalized pub.dev package metadata.
+- Ensured the published example and changelog are discoverable by package analysis.
+
+## 0.1.4
+
+- Published a complete runnable example layout for package consumers.
+- Corrected package metadata and changelog formatting for pub.dev analysis.
+
 ## 0.1.3
 
 - Added API documentation comments for the core public surface.
@@ -13,7 +23,7 @@
 - Include storage source files in the published package.
 - Improve pub.dev documentation and AI usage guidance.
 
-## 0.1.0
+## 0.1.1
 
 - Added conditional web stubs so the Flutter Web release build works without SQLite FFI.
 
